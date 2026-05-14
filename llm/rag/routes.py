@@ -3,6 +3,7 @@ from __future__ import annotations
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 from rbac import admin_required
+from db import Log
 
 from .service import (
     answer_question,
@@ -19,6 +20,7 @@ rag_api = Blueprint("rag_api", __name__)
 @rag_api.route("/rag/status", methods=["GET"])
 @jwt_required()
 def rag_status():
+    Log.info("RAG Status fetched")
     return jsonify(get_index_status())
 
 
@@ -27,6 +29,7 @@ def rag_status():
 def rag_reindex():
     payload = request.get_json(silent=True) or {}
     force = bool(payload.get("force", False))
+    Log.info("Indexing documents")
     return jsonify(build_or_refresh_index(force=force))
 
 
@@ -52,12 +55,14 @@ def rag_ask():
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
 
+    Log.info("Question: " + question + "\nAnswer: " + result.get("answer"))
     return jsonify(result)
 
 
 @rag_api.route("/rag/models", methods=["GET"])
 @jwt_required()
 def rag_models():
+    Log.info("Rag models loaded")
     return jsonify(get_model_catalog())
 
 
@@ -65,4 +70,5 @@ def rag_models():
 @jwt_required()
 @admin_required
 def llm_usage():
+    Log.info("Usage data fetched")
     return jsonify(get_usage_summary())
