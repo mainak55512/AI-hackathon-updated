@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal reset/global style */
+body {
+  @apply bg-slate-50 text-slate-900;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}

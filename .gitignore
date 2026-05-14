@@ -1,0 +1,14 @@
+.env
+backend/.venv/
+backend/.qwe/
+backend/.crul/
+backend/bin/
+backend/include/
+backend/lib/
+backend/__pycache__/
+backend/var/
+backend/.gitignore
+backend/hackathon.db
+llm/chroma_db/
+
+llm/__pycache__/
